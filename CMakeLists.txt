@@ -25,21 +25,21 @@ if(RAPIDJSON_HAS_STDSTRING)
     add_definitions(-DRAPIDJSON_HAS_STDSTRING)
 endif()
 
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+if (${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native -Wall -Wextra -Werror")
 elseif (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native -Wall -Wextra -Werror -Wno-missing-field-initializers")
-elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
+elseif (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS=1)
 endif()
 
 #add extra search paths for libraries and includes
-SET(INCLUDE_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/include" CACHE PATH "The directory the headers are installed in")
-SET(LIB_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/lib" CACHE STRING "Directory where lib will install")
-SET(DOC_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/share/doc/${PROJECT_NAME}" CACHE PATH "Path to the documentation")
+SET(RAPIDJSON_INCLUDE_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/include" CACHE PATH "The directory the headers are installed in")
+SET(RAPIDJSON_LIB_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/lib" CACHE STRING "Directory where lib will install")
+SET(RAPIDJSON_DOC_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/share/doc/${PROJECT_NAME}" CACHE PATH "Path to the documentation")
 
 IF(UNIX OR CYGWIN)
-    SET(_CMAKE_INSTALL_DIR "${LIB_INSTALL_DIR}/cmake/${PROJECT_NAME}")
+    SET(_CMAKE_INSTALL_DIR "${RAPIDJSON_LIB_INSTALL_DIR}/cmake/${PROJECT_NAME}")
 ELSEIF(WIN32)
     SET(_CMAKE_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}/cmake")
 ENDIF()
@@ -74,20 +74,20 @@ IF (UNIX OR CYGWIN)
                   ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.pc
                   @ONLY)
   INSTALL (FILES ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.pc
-      DESTINATION "${LIB_INSTALL_DIR}/pkgconfig"
+      DESTINATION "${RAPIDJSON_LIB_INSTALL_DIR}/pkgconfig"
       COMPONENT pkgconfig)
 ENDIF()
 
 install(FILES readme.md
-        DESTINATION "${DOC_INSTALL_DIR}"
+        DESTINATION "${RAPIDJSON_DOC_INSTALL_DIR}"
         COMPONENT doc)
 
 install(DIRECTORY include/rapidjson
-    DESTINATION "${INCLUDE_INSTALL_DIR}"
+    DESTINATION "${RAPIDJSON_INCLUDE_INSTALL_DIR}"
     COMPONENT dev)
 
 install(DIRECTORY example/
-    DESTINATION "${DOC_INSTALL_DIR}/examples"
+    DESTINATION "${RAPIDJSON_DOC_INSTALL_DIR}/examples"
     COMPONENT examples
     # Following patterns are for excluding the intermediate/object files
     # from an install of in-source CMake build.
